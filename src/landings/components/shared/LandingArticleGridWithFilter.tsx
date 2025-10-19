@@ -51,7 +51,6 @@ export const ArticleGrid = ({ flatArticles }: ArticleGridProps) => {
   const articlesPerPage = useResponsiveArticlesPerPage()
 
   const inputRef = useRef<HTMLInputElement>(null)
-  const headingRef = useRef<HTMLHeadingElement>(null)
 
   // Reset to first page when articlesPerPage changes (screen size changes)
   useEffect(() => {
@@ -113,14 +112,6 @@ export const ArticleGrid = ({ flatArticles }: ArticleGridProps) => {
     e.preventDefault()
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber)
-      if (headingRef.current) {
-        const elementPosition = headingRef.current.getBoundingClientRect().top + window.scrollY
-        const offsetPosition = elementPosition - 140 // 140px offset from top
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth',
-        })
-      }
     }
   }
 
@@ -131,7 +122,7 @@ export const ArticleGrid = ({ flatArticles }: ArticleGridProps) => {
         {/* Title and Dropdown Row */}
         <div className={styles.titleAndDropdownRow}>
           {/* Title */}
-          <h2 ref={headingRef} className={cx(styles.headerTitle, styles.headerTitleText)}>
+          <h2 className={cx(styles.headerTitle, styles.headerTitleText)}>
             {t('article_grid.heading')}
           </h2>
 
@@ -165,6 +156,7 @@ export const ArticleGrid = ({ flatArticles }: ArticleGridProps) => {
           <form onSubmit={(e) => e.preventDefault()}>
             <TextInput
               leadingVisual={SearchIcon}
+              sx={{ width: '100%' }}
               placeholder={t('article_grid.search_articles')}
               ref={inputRef}
               autoComplete="false"
@@ -218,8 +210,7 @@ type ArticleCardProps = {
 
 const ArticleCard = ({ article }: ArticleCardProps) => {
   return (
-    <Link
-      href={article.fullPath}
+    <div
       className={cx(
         styles.articleCard,
         styles.articleCardBox,
@@ -235,10 +226,12 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
       </div>
 
       <h3 className={styles.cardTitle}>
-        <span className={styles.cardTitleLink}>{article.title}</span>
+        <Link href={article.fullPath} className={styles.cardTitleLink}>
+          {article.title}
+        </Link>
       </h3>
 
       {article.intro && <div className={styles.cardIntro}>{article.intro}</div>}
-    </Link>
+    </div>
   )
 }

@@ -1015,7 +1015,7 @@ test.describe('LandingCarousel component', () => {
 
     // Check that article cards are present
     const items = page.locator('[data-testid="carousel-items"]')
-    const cards = items.locator('a')
+    const cards = items.locator('div')
     await expect(cards.first()).toBeVisible()
 
     // Verify cards have real titles (not "Unknown Article" when article not found)
@@ -1190,7 +1190,7 @@ test.describe('LandingArticleGridWithFilter component', () => {
     await expect(articleCards.first()).toBeVisible()
 
     const firstCard = articleCards.first()
-    const titleLink = firstCard.locator('h3 span')
+    const titleLink = firstCard.locator('h3 a')
     await expect(titleLink).toBeVisible()
 
     const intro = firstCard.locator('div').last() // cardIntro is the last div
